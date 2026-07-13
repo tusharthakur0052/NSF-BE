@@ -17,7 +17,7 @@ export class AuthService {
     return this.adminService.createAdmin(authCredentialsDto);
   }
 
-  async login(authCredentialsDto: AuthCredentialsDto): Promise<{ message: string, accessToken: string, refreshToken: string }> {
+  async login(authCredentialsDto: AuthCredentialsDto): Promise<{ message: string, data: { accessToken: string, refreshToken: string } }> {
     const { userName, password } = authCredentialsDto;
     const admin = await this.adminService.findByUserName(userName);
 
@@ -29,9 +29,9 @@ export class AuthService {
         expiresIn: '7d',
       });
 
-      await this.adminService.updateRefreshToken(admin._id.toString(), refreshToken);
+      await this.adminService.updateTokens(admin._id.toString(), accessToken, refreshToken);
 
-      return { message: 'Login successful', accessToken, refreshToken };
+      return { message: 'Login successful', data: { accessToken, refreshToken } };
     } else {
       throw new UnauthorizedException('Please check your login credentials');
     }
@@ -57,6 +57,7 @@ export class AuthService {
       }
 
       const newAccessToken = this.jwtService.sign({ userName: admin.userName });
+      await this.adminService.updateTokens(admin._id.toString(), newAccessToken, token);
       return { accessToken: newAccessToken };
     } catch (e) {
       throw new UnauthorizedException('Invalid refresh token');
@@ -66,7 +67,7 @@ export class AuthService {
   async logout(userName: string) {
     const admin = await this.adminService.findByUserName(userName);
     if (admin) {
-      await this.adminService.updateRefreshToken(admin._id.toString(), null);
+      await this.adminService.updateTokens(admin._id.toString(), null, null);
     }
     return { message: 'Logged out successfully' };
   }

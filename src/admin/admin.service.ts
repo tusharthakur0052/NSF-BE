@@ -43,6 +43,10 @@ export class AdminService {
     await this.adminModel.findByIdAndUpdate(id, { refreshToken }).exec();
   }
 
+  async updateTokens(id: string, accessToken: string | null, refreshToken: string | null): Promise<void> {
+    await this.adminModel.findByIdAndUpdate(id, { accessToken, refreshToken }).exec();
+  }
+
   async generateResetToken(userName: string): Promise<{ resetToken: string }> {
     const admin = await this.findByUserName(userName);
     if (!admin) {

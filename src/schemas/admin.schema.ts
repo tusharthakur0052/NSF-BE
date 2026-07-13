@@ -13,6 +13,9 @@ export class Admin {
 
   @Prop()
   refreshToken?: string;
+
+  @Prop()
+  accessToken?: string;
   
   @Prop()
   resetToken?: string;

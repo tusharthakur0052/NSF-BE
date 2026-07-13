@@ -14,7 +14,7 @@ import { SubscriptionPlansModule } from './subscription-plans/subscription-plans
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
-        uri: configService.get<string>('MONGODB_URI') || 'mongodb://localhost:27017/my-app',
+        uri: process.env.MONGODB_URI
       }),
       inject: [ConfigService],
     }),
