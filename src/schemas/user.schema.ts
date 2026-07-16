@@ -39,8 +39,16 @@ export class User {
   @Prop({ default: false })
   subscriptionIsActive: boolean;
 
+  @Prop({ default: 'Active' })
+  subscriptionStatus: string;
+
   @Prop({ default: false })
   isDeleted: boolean;
+
+  latestSubscriptionDate?: Date;
+
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

@@ -60,4 +60,14 @@ export class CreateUserDto {
   @IsBoolean()
   @IsNotEmpty()
   subscriptionIsActive: boolean;
+
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  paymentMethod?: string;
+
+  @ApiProperty({ required: false })
+  @IsDateString()
+  @IsOptional()
+  joinDate?: string;
 }

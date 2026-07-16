@@ -1,13 +1,17 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ScheduleModule } from '@nestjs/schedule';
 import { AuthModule } from './auth/auth.module';
 import { AdminModule } from './admin/admin.module';
 import { UsersModule } from './users/users.module';
 import { SubscriptionPlansModule } from './subscription-plans/subscription-plans.module';
+import { EntriesModule } from './entries/entries.module';
+import { ExpensesModule } from './expenses/expenses.module';
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -22,6 +26,8 @@ import { SubscriptionPlansModule } from './subscription-plans/subscription-plans
     AdminModule,
     UsersModule,
     SubscriptionPlansModule,
+    EntriesModule,
+    ExpensesModule,
   ],
 })
 export class AppModule { }
