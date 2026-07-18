@@ -42,7 +42,11 @@ export class UsersService {
     }
   }
 
-  async findAll(query?: any): Promise<{ message: string, data: User[] }> {
+  async findAll(query?: any): Promise<{ message: string, data: User[], total: number, page: number, limit: number, totalPages: number }> {
+    const page = Number(query?.page) || 1;
+    const limit = Number(query?.limit) || 10;
+    const skip = (page - 1) * limit;
+
     const filter: any = { isDeleted: false };
     if (query) {
       if (query.nonActive === 'true') {
@@ -50,8 +54,33 @@ export class UsersService {
       } else if (query.activeOnly === 'true') {
         filter.subscriptionIsActive = true;
       }
+      if (query.status && query.status !== 'All Status') {
+        filter.subscriptionStatus = query.status;
+      }
+      if (query.planId && query.planId !== 'All Plans') {
+        filter.subscriptionPlanId = query.planId;
+      }
+      if (query.search) {
+        filter.$or = [
+          { firstName: { $regex: query.search, $options: 'i' } },
+          { lastName: { $regex: query.search, $options: 'i' } },
+          { phoneNumber: { $regex: query.search, $options: 'i' } },
+        ];
+      }
     }
-    const users = await this.userModel.find(filter).lean().exec();
+
+    const [users, total] = await Promise.all([
+      this.userModel
+        .find(filter)
+        .populate('subscriptionPlanId')
+        .skip(skip)
+        .limit(limit)
+        .sort({ createdAt: -1 })
+        .lean()
+        .exec(),
+      this.userModel.countDocuments(filter).exec(),
+    ]);
+
     const usersWithLatestSubscription = await Promise.all(
       users.map(async (user: any) => {
         const latestEntry = await this.entryModel
@@ -68,7 +97,11 @@ export class UsersService {
     );
     return {
       message: 'User fetched successfully',
-      data: usersWithLatestSubscription as any
+      data: usersWithLatestSubscription as any,
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
     };
   }
 

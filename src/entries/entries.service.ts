@@ -28,7 +28,10 @@ export class EntriesService {
     });
 
     await newEntry.save();
-    await this.userModel.updateOne({ _id: user._id }, { subscriptionIsActive: true });
+    await this.userModel.updateOne(
+      { _id: user._id },
+      { subscriptionIsActive: true, subscriptionStatus: 'Active' }
+    );
     return { message: 'Entry created successfully', data: newEntry };
   }
 
@@ -38,7 +41,7 @@ export class EntriesService {
     search?: string;
     userId?: string;
     subscriptionPlanId?: string;
-  }): Promise<{ message: string, data: Entry[], total: number, page: number, limit: number }> {
+  }): Promise<{ message: string, data: Entry[], total: number, totalPages: number, page: number, limit: number }> {
     const page = Number(query.page) || 1;
     const limit = Number(query.limit) || 10;
     const skip = (page - 1) * limit;
@@ -73,6 +76,7 @@ export class EntriesService {
       total,
       page,
       limit,
+      totalPages: Math.ceil(total / limit),
     };
   }
 

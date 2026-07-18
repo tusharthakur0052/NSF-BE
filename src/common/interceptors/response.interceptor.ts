@@ -23,10 +23,12 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
            message = 'Record deleted successfully.';
         }
 
+        const { message: _msg, data: _data, ...rest } = data?.message ? data : { message: null, data: null };
         return {
           success: true,
           message: data?.message || message,
           data: data?.message ? data.data : data,
+          ...(data?.message ? rest : {}),
         };
       }),
     );
