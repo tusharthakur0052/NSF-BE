@@ -33,6 +33,9 @@ export class User {
   @Prop()
   fingerPrint: string;
 
+  @Prop({ type: String })
+  admission_No?: string;
+
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'SubscriptionPlan', required: true })
   subscriptionPlanId: MongooseSchema.Types.ObjectId;
 
@@ -41,6 +44,9 @@ export class User {
 
   @Prop({ default: 'Active' })
   subscriptionStatus: string;
+
+  @Prop({ type: Date })
+  subscriptionExpiryDate?: Date;
 
   @Prop({ default: false })
   isDeleted: boolean;

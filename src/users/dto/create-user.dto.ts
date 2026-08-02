@@ -51,6 +51,11 @@ export class CreateUserDto {
   @IsNotEmpty()
   fingerPrint: string;
 
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  admission_No?: string;
+
   @ApiProperty()
   @IsMongoId()
   @IsNotEmpty()
