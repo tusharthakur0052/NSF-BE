@@ -33,6 +33,9 @@ export class User {
   @Prop()
   fingerPrint: string;
 
+  @Prop({ default: null })
+  imageUrl?: string;
+
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'SubscriptionPlan', required: true })
   subscriptionPlanId: MongooseSchema.Types.ObjectId;
 
