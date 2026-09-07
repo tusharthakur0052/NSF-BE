@@ -39,11 +39,11 @@ export class DocumentService {
       region: this.region,
       ...(accessKeyId && secretAccessKey
         ? {
-            credentials: {
-              accessKeyId,
-              secretAccessKey,
-            },
-          }
+          credentials: {
+            accessKeyId,
+            secretAccessKey,
+          },
+        }
         : {}),
     });
   }
@@ -127,7 +127,7 @@ export class DocumentService {
    */
   async uploadMultipleImages(
     files: Express.Multer.File[],
-    folder: string = 'images',
+    folder: string = 'ns-fitness',
     userId?: string,
   ): Promise<DocumentFile[]> {
     if (!files || files.length === 0) {

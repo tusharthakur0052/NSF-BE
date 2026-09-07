@@ -4,10 +4,14 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
+import morgan from 'morgan';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // HTTP Request Logger
+  app.use(morgan('dev'));
 
   // Global Interceptor
   app.useGlobalInterceptors(new ResponseInterceptor());

@@ -33,7 +33,7 @@ import { GetImageUrlQueryDto } from './dto/get-url.dto';
 @ApiTags('document')
 @Controller('document')
 export class DocumentController {
-  constructor(private readonly documentService: DocumentService) {}
+  constructor(private readonly documentService: DocumentService) { }
 
   @Post('upload')
   @UseGuards(JwtAuthGuard)
@@ -72,25 +72,25 @@ export class DocumentController {
     return this.documentService.uploadImage(file, dto.folder || 'images', userId);
   }
 
-  @Post('upload-multiple')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
-  @HttpCode(HttpStatus.CREATED)
-  @ApiOperation({ summary: 'Upload multiple images to S3 bucket' })
-  @ApiConsumes('multipart/form-data')
-  @ApiBody({
-    description: 'List of image files to upload',
-    type: MultipleFilesUploadSwaggerDto,
-  })
-  @UseInterceptors(FilesInterceptor('files', 10))
-  async uploadMultipleImages(
-    @UploadedFiles() files: Express.Multer.File[],
-    @Body() dto: UploadImageDto,
-    @Req() req: any,
-  ) {
-    const userId = req.user?._id || req.user?.id;
-    return this.documentService.uploadMultipleImages(files, dto.folder || 'images', userId);
-  }
+  // @Post('upload-multiple')
+  // @UseGuards(JwtAuthGuard)
+  // @ApiBearerAuth()
+  // @HttpCode(HttpStatus.CREATED)
+  // @ApiOperation({ summary: 'Upload multiple images to S3 bucket' })
+  // @ApiConsumes('multipart/form-data')
+  // @ApiBody({
+  //   description: 'List of image files to upload',
+  //   type: MultipleFilesUploadSwaggerDto,
+  // })
+  // @UseInterceptors(FilesInterceptor('files', 10))
+  // async uploadMultipleImages(
+  //   @UploadedFiles() files: Express.Multer.File[],
+  //   @Body() dto: UploadImageDto,
+  //   @Req() req: any,
+  // ) {
+  //   const userId = req.user?._id || req.user?.id;
+  //   return this.documentService.uploadMultipleImages(files, dto.folder || 'images', userId);
+  // }
 
   @Get('url')
   @ApiOperation({ summary: 'Get image URL and optional presigned URL by key or ID' })
@@ -141,13 +141,13 @@ export class DocumentController {
     return this.documentService.findById(id);
   }
 
-  @Delete('key/*')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Delete an image from S3 by object key path' })
-  async deleteByKeyPath(@Param('0') keyPath: string) {
-    return this.documentService.deleteImage(keyPath);
-  }
+  // @Delete('key/*')
+  // @UseGuards(JwtAuthGuard)
+  // @ApiBearerAuth()
+  // @ApiOperation({ summary: 'Delete an image from S3 by object key path' })
+  // async deleteByKeyPath(@Param('0') keyPath: string) {
+  //   return this.documentService.deleteImage(keyPath);
+  // }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
