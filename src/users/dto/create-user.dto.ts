@@ -75,4 +75,10 @@ export class CreateUserDto {
   @IsDateString()
   @IsOptional()
   joinDate?: string;
+
+  @ApiProperty({ required: false, description: 'S3 or public Image URL of member' })
+  @IsString()
+  @IsOptional()
+  imageUrl?: string;
+
 }

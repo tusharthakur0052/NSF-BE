@@ -9,6 +9,7 @@ import { SubscriptionPlansModule } from './subscription-plans/subscription-plans
 import { EntriesModule } from './entries/entries.module';
 import { ExpensesModule } from './expenses/expenses.module';
 import { HealthModule } from './health/health.module';
+import { DocumentModule } from './document/document.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { HealthModule } from './health/health.module';
     EntriesModule,
     ExpensesModule,
     HealthModule,
+    DocumentModule,
   ],
 })
 export class AppModule { }

@@ -36,6 +36,9 @@ export class User {
   @Prop({ type: String })
   admission_No?: string;
 
+  @Prop({ default: null })
+  imageUrl?: string;
+
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'SubscriptionPlan', required: true })
   subscriptionPlanId: MongooseSchema.Types.ObjectId;
 
