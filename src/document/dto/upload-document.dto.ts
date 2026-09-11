@@ -4,18 +4,18 @@ import { IsOptional, IsString } from 'class-validator';
 export class UploadImageDto {
   @ApiPropertyOptional({
     description: 'Folder or directory path in S3 bucket (e.g., images, profiles, products)',
-    default: 'images',
+    default: 'ns-fitness',
   })
   @IsOptional()
   @IsString()
   folder?: string;
 
-  @ApiPropertyOptional({
-    description: 'Optional description or tag for the image',
-  })
-  @IsOptional()
-  @IsString()
-  description?: string;
+  // @ApiPropertyOptional({
+  //   description: 'Optional description or tag for the image',
+  // })
+  // @IsOptional()
+  // @IsString()
+  // description?: string;
 }
 
 export class FileUploadSwaggerDto {

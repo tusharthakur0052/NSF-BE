@@ -74,7 +74,7 @@ export class DocumentService {
    */
   async uploadImage(
     file: Express.Multer.File,
-    folder: string = 'images',
+    folder: string,
     userId?: string,
   ): Promise<DocumentFile> {
     if (!file) {

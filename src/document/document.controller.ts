@@ -69,7 +69,7 @@ export class DocumentController {
     @Req() req: any,
   ) {
     const userId = req.user?._id || req.user?.id;
-    return this.documentService.uploadImage(file, dto.folder || 'images', userId);
+    return this.documentService.uploadImage(file, dto.folder || '', userId);
   }
 
   // @Post('upload-multiple')

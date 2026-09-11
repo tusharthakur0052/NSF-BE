@@ -39,6 +39,9 @@ export class User {
   @Prop({ default: null })
   imageUrl?: string;
 
+  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'DocumentFile', default: null })
+  documentId?: MongooseSchema.Types.ObjectId;
+
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'SubscriptionPlan', required: true })
   subscriptionPlanId: MongooseSchema.Types.ObjectId;
 

@@ -81,4 +81,8 @@ export class CreateUserDto {
   @IsOptional()
   imageUrl?: string;
 
+  @ApiProperty({ required: false, description: 'Document ID of member photo in S3/documents collection' })
+  @IsString()
+  @IsOptional()
+  documentId?: string;
 }
