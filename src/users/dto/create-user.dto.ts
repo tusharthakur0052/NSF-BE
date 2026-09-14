@@ -1,25 +1,28 @@
-import { IsString, IsNotEmpty, IsPhoneNumber, IsPositive, IsDateString, IsEnum, IsBoolean, IsOptional, MinLength, MaxLength, IsMongoId } from 'class-validator';
+import { IsString, IsNotEmpty, IsPositive, IsDateString, IsEnum, IsBoolean, IsOptional, MinLength, MaxLength, IsMongoId, Matches } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 
 export class CreateUserDto {
-  @ApiProperty()
+  @ApiProperty({ example: 'John' })
   @IsString()
-  @IsNotEmpty()
-  @MinLength(2)
-  @MaxLength(50)
+  @IsNotEmpty({ message: 'First name is required' })
+  @MinLength(2, { message: 'First name must be at least 2 characters long' })
+  @MaxLength(50, { message: 'First name cannot exceed 50 characters' })
+  @Matches(/^[a-zA-Z\s'-]+$/, { message: 'First name can only contain letters, spaces, and hyphens' })
   firstName: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'Doe' })
   @IsString()
-  @IsNotEmpty()
-  @MinLength(2)
-  @MaxLength(50)
+  @IsNotEmpty({ message: 'Last name is required' })
+  @MinLength(1, { message: 'Last name is required' })
+  @MaxLength(50, { message: 'Last name cannot exceed 50 characters' })
+  @Matches(/^[a-zA-Z\s'-]+$/, { message: 'Last name can only contain letters, spaces, and hyphens' })
   lastName: string;
 
-  @ApiProperty()
-  @IsNotEmpty()
+  @ApiProperty({ example: '+919876543210' })
+  @IsNotEmpty({ message: 'Phone number is required' })
   @IsString()
+  @Matches(/^(\+91)?[6-9]\d{9}$/, { message: 'Phone number must be a valid 10-digit mobile number with +91 country code' })
   phoneNumber: string;
 
   @ApiProperty()
@@ -37,8 +40,9 @@ export class CreateUserDto {
   @IsPositive()
   age: number;
 
-  @ApiProperty()
-  @IsDateString()
+  @ApiProperty({ example: '2000-01-01' })
+  @IsNotEmpty({ message: 'Date of birth is required' })
+  @IsDateString({}, { message: 'Date of birth must be a valid date (YYYY-MM-DD)' })
   dateOfBirth: Date;
 
   @ApiProperty()

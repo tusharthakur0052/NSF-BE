@@ -5,8 +5,8 @@ export class AuthCredentialsDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  @MinLength(4)
-  @MaxLength(20)
+  @MinLength(3)
+  @MaxLength(30)
   userName: string;
 
   @ApiProperty()

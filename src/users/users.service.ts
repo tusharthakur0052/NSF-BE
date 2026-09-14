@@ -17,8 +17,23 @@ export class UsersService {
     @InjectModel(SubscriptionPlan.name) private subscriptionPlanModel: Model<SubscriptionPlanDocument>,
   ) { }
 
+  private formatPhoneNumber(rawPhone?: string): string | undefined {
+    if (!rawPhone) return rawPhone;
+    const trimmed = rawPhone.trim();
+    const digits = trimmed.replace(/\D/g, '');
+    if (digits.length === 10) {
+      return `+91${digits}`;
+    } else if (digits.length === 12 && digits.startsWith('91')) {
+      return `+${digits}`;
+    }
+    return trimmed.startsWith('+') ? trimmed : `+91${trimmed}`;
+  }
+
   async create(createUserDto: CreateUserDto): Promise<{ message: string, data: User }> {
     try {
+      if (createUserDto.phoneNumber) {
+        createUserDto.phoneNumber = this.formatPhoneNumber(createUserDto.phoneNumber)!;
+      }
       const newUser = new this.userModel(createUserDto);
       if (createUserDto.joinDate) {
         (newUser as any).createdAt = new Date(createUserDto.joinDate);
@@ -219,6 +234,9 @@ export class UsersService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<{ message: string, data: User }> {
+    if (updateUserDto.phoneNumber) {
+      updateUserDto.phoneNumber = this.formatPhoneNumber(updateUserDto.phoneNumber)!;
+    }
     const updatedUser = await this.userModel
       .findOneAndUpdate({ _id: id, isDeleted: false }, updateUserDto, { returnDocument: 'after' })
       .exec();
@@ -230,7 +248,7 @@ export class UsersService {
   }
 
   async remove(id: string): Promise<{ message: string, data: User }> {
-    const deletedUser = await this.userModel
+    const deletedUser: any = await this.userModel
       .findByIdAndUpdate(id, { isDeleted: true }, { returnDocument: 'after' })
       .exec();
 
